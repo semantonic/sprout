@@ -1,6 +1,7 @@
 package org.semantonic.sprout;
 
 import java.util.EnumSet;
+import java.util.logging.Logger;
 
 import javax.servlet.DispatcherType;
 
@@ -23,6 +24,7 @@ import com.google.inject.servlet.GuiceFilter;
 public class JettyLauncher {
 	
 	public static final int DEFAULT_PORT = 9080;
+	private static final Logger logger = Logger.getLogger(JettyLauncher.class.getName());
 
 	public static void main(String[] args) throws Exception {
 		final int port = args.length > 0 ? Integer.parseInt(args[0]) : DEFAULT_PORT;
@@ -33,6 +35,12 @@ public class JettyLauncher {
 		final Server server = createAndSetupServer(port, guiceInjector);
 		
 		server.start();
+		logger.info(String.format("\n"
+				+ "------------------------------------------\n"
+				+ "       http://localhost:%d%s \n"
+				+ "------------------------------------------",
+				port, BoundaryConstants.API_BASE_PATH));
+
 		server.join();
 	}
 	

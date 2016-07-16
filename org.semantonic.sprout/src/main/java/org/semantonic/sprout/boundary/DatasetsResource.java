@@ -20,6 +20,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
@@ -71,7 +72,6 @@ public class DatasetsResource {
 		final List<DatasetDTO> datasets = getDatasets();
 		return template.datasetOverviewPage(datasets).toString();
 	}
-//	run JettyLauncher -> http://localhost:9080/webapi/dataset
 	
 	@GET @GetDatasetById
 	@Path("{" + DATASET_ID + "}")
@@ -107,6 +107,27 @@ public class DatasetsResource {
 		return Response.created(location).build();
 	}
 	
+	@GET @AddNewDatasetHtmlForm
+	@Path("addNewDatasetHtmlForm")
+	@Produces(MediaType.TEXT_HTML)
+	public String addNewDatasetHtmlForm() {
+		return template.addNewDatasetForm().toString();
+	}
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public Response addNewDatasetFormSubmit(MultivaluedMap<String, String> formParams) {
+		DatasetDTO in = new DatasetDTO(
+				null,
+				formParams.getFirst(DatasetDTO.P_ID),
+				formParams.getFirst(DatasetDTO.P_NAME),
+				formParams.getFirst(DatasetDTO.P_LINK)
+				);
+		
+		Response r = addNewDataset(in);
+		return Response.seeOther(r.getLocation()).build();
+	}
+	
 	// -------------------------------
 	
 	@Retention(RetentionPolicy.RUNTIME)
@@ -118,6 +139,11 @@ public class DatasetsResource {
 	@Target(ElementType.METHOD)
 	@MethodMarker
 	public @interface AddNewDataset {}
+	
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.METHOD)
+	@MethodMarker
+	public @interface AddNewDatasetHtmlForm {}
 	
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.METHOD)

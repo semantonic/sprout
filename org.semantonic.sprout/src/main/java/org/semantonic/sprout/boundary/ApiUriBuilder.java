@@ -12,6 +12,7 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 import org.semantonic.sprout.boundary.DatasetsResource.AddNewDataset;
+import org.semantonic.sprout.boundary.DatasetsResource.AddNewDatasetHtmlForm;
 import org.semantonic.sprout.boundary.DatasetsResource.GetDatasetById;
 import org.semantonic.sprout.boundary.DatasetsResource.GetDatasets;
 import org.semantonic.sprout.entity.DatasetId;
@@ -59,6 +60,12 @@ public class ApiUriBuilder {
 
 	public URI buildAddNewDatasetURI() {
 		final Method m = DatasetsResource.methodMarkers.resolveOrFail(AddNewDataset.class);
+		final UriBuilder builder = createUriBuilder(DatasetsResource.class, m);
+		return builder.build();
+	}
+	
+	public URI buildAddNewDatasetHtmlFormURI() {
+		final Method m = DatasetsResource.methodMarkers.resolveOrFail(AddNewDatasetHtmlForm.class);
 		final UriBuilder builder = createUriBuilder(DatasetsResource.class, m);
 		return builder.build();
 	}
