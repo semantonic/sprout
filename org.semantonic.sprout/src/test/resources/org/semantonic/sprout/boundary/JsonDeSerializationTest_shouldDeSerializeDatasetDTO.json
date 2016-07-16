@@ -1,0 +1,6 @@
+{
+	"id": "http://localhost:9080/webapi/datasets/foo",
+	"href": "http://localhost:9080/webapi/datasets/bar",
+	"name": "my special dataset",
+	"link": "http://localhost:9080/webapi/datasets/bla"
+}
